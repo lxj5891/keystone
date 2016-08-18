@@ -1,6 +1,26 @@
 # KeystoneJS Changelog
 
 KeystoneJS is maintained by [@JedWatson](https://github.com/JedWatson) and an amazing team of contributors. All contributions are given credit here except for Jed's.
+## Qiniu_Support / Thu Aug 18 2016
+
+* added support qiniu stone
+
+
+* file change 
+```
+add
+admin/public/styles/keystone/field-qiniuimage.less
+fields/types/qiniuimage/QiniuImageField.js
+fields/types/qiniuimage/QiniuImageType.js
+fields/types/qiniuimages/QiniuImagesField.js
+fields/types/qiniuimages/QiniuImagesType.js
+
+update
+
+lib/fieldTypes.js
+templates/mixins/columns.jade
+
+```
 
 ## v0.3.22 / 2016-07-22
 
