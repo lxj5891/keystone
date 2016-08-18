@@ -12,10 +12,6 @@ var Thumbnail = React.createClass({
 
   render: function() {
 
-    console.log("create thumbnails class  1");
-
-    console.log("create thumbnails class render 2");
-
     var iconClassName, imageDetails;
 
     if (this.props.deleted) {
@@ -62,8 +58,6 @@ module.exports = Field.create({
 
   getInitialState: function() {
 
-    console.log("Field getInitialState 0");
-
     var thumbnails = [];
     var self = this;
 
@@ -75,8 +69,6 @@ module.exports = Field.create({
   },
 
   removeThumbnail: function (i) {
-    
-    console.log("Field removeThumbnail 1");
 
     var thumbs = this.state.thumbnails;
     var thumb = thumbs[i];
@@ -91,8 +83,6 @@ module.exports = Field.create({
   },
 
   pushThumbnail: function (args, thumbs) {
-    
-    console.log("Field pushThumbnail 2");
 
     thumbs = thumbs || this.state.thumbnails;
     var i = thumbs.length;
@@ -101,15 +91,11 @@ module.exports = Field.create({
   },
 
   fileFieldNode: function() {
-    
-    console.log("Field fileFieldNode 2");
 
     return this.refs.fileField.getDOMNode();
   },
 
   getCount: function (key) {
-
-    console.log("Field getCount 3");
 
     var count = 0;
 
@@ -121,15 +107,11 @@ module.exports = Field.create({
   },
 
   renderFileField: function() {
-    
-    console.log("Field renderFileField 4");
 
     return <input ref='fileField' type='file' name={this.props.paths.upload} multiple className='field-upload' onChange={this.uploadFile} />;
   },
 
   clearFiles: function() {
-
-    console.log("Field clearFiles 4");
 
     this.fileFieldNode().value = '';
 
@@ -141,9 +123,6 @@ module.exports = Field.create({
   },
 
   uploadFile: function (event) {
-
-    console.log("Field uploadFile 5");
-
 
     var self = this;
 
@@ -170,21 +149,15 @@ module.exports = Field.create({
 
   changeImage: function() {
 
-    console.log("Field changeImage 6");
-
     this.fileFieldNode().click();
   },
 
   hasFiles: function() {
 
-    console.log("Field hasFiles 7");
-
     return this.refs.fileField && this.fileFieldNode().value;
   },
 
   renderToolbar: function() {
-
-    console.log("Field renderToolbar 8");
 
     var body = [];
 
@@ -219,8 +192,6 @@ module.exports = Field.create({
 
   renderPlaceholder: function() {
 
-    console.log("Field renderToolbar 9");
-
     return (
       <div className='image-field image-upload row col-sm-3 col-md-12' onClick={this.changeImage}>
         <div className='image-preview'>
@@ -239,8 +210,6 @@ module.exports = Field.create({
 
   renderContainer: function() {
 
-    console.log("Field renderContainer 10");
-
     return (
       <div className='images-container clearfix'>
         {this.state.thumbnails}
@@ -249,8 +218,6 @@ module.exports = Field.create({
   },
 
   renderFieldAction: function() {
-
-    console.log("Field renderFieldAction 11");
 
     var value = '';
     var remove = [];
@@ -264,15 +231,10 @@ module.exports = Field.create({
 
   renderUploadsField: function() {
 
-    console.log("Field renderFieldAction 12");
-
     return <input ref='uploads' className='field-uploads' type='hidden' name={this.props.paths.uploads} />;
   },
 
   renderUI: function() {
-
-    console.log("Field renderUI 13");
-
     return (
       <div className='field field-type-qiniuimages'>
         <label className='field-label'>{this.props.label}</label>

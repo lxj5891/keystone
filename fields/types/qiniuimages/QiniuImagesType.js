@@ -24,8 +24,6 @@ var _ = require('underscore'),
 
 function qiniuimages(list, path, options) {
 
-  console.log("qiniuimages  1");
-
   this._underscoreMethods = ['format'];
   this._fixedSize = 'full';
   this._properties = ['select', 'selectPrefix', 'autoCleanup', 'publicID', 'folder', 'filenameAsPublicID'];
@@ -72,8 +70,6 @@ util.inherits(qiniuimages, super_);
  */
 
 qiniuimages.prototype.addToSchema = function() {
-
-  console.log("addToSchema  2");
 
   var mongoose = keystone.mongoose;
 
@@ -329,8 +325,6 @@ qiniuimages.prototype.addToSchema = function() {
 
 qiniuimages.prototype.format = function(item) {
 
-  console.log("format 3");
-
   if ('function' === typeof this.options.format) {
     var imgList = _.map(item.get(this.path), function(img) {
       return img.secure_url;
@@ -374,12 +368,8 @@ qiniuimages.prototype.validateInput = function(data) {//eslint-disable-line no-u
  * @api public
  */
 
-qiniuimages.prototype.updateItem = function(item, data) {//eslint-disable-line no-unused-vars
-
-  console.log("updateItem 4");
-  console.log(item);
-  console.log(data);
-  console.log("updateItem 4");
+qiniuimages.prototype.updateItem = function(item, data) {
+  //eslint-disable-line no-unused-vars
   // TODO - direct updating of data (not via upload)
 };
 
@@ -395,10 +385,6 @@ qiniuimages.prototype.updateItem = function(item, data) {//eslint-disable-line n
  */
 
 qiniuimages.prototype.getRequestHandler = function(item, req, paths, callback) {
-
-  console.log("getRequestHandler 3");
-  console.log(req);
-  console.log("getRequestHandler 3");
 
   var field = this;
 
@@ -535,9 +521,6 @@ qiniuimages.prototype.getRequestHandler = function(item, req, paths, callback) {
         putExtra.check_crc = check_crc = 1; // check crc (local vs. remote)
         qiniu.io.putFile(token, fileName, file.path, putExtra, function(err, result) {
           
-          console.log(err);
-          console.log(result);
-
           if (err) {
             return next(result);
           } else {
@@ -592,8 +575,6 @@ qiniuimages.prototype.getRequestHandler = function(item, req, paths, callback) {
  */
 
 qiniuimages.prototype.handleRequest = function(item, req, paths, callback) {
-  
-  console.log("handleRequest   ");
 
   this.getRequestHandler(item, req, paths, callback)();
 };
