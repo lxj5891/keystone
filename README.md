@@ -1,3 +1,90 @@
+
+## 使用方法
+
+* keystone.js
+
+```
+.
+..
+...
+
+keystone.init({
+
+	'name': 'Qiniu-Keystone',
+	'brand': 'Qiniu-Keystone',
+
+	'less': 'public',
+	'static': 'public',
+	'favicon': 'public/favicon.ico',
+	'views': 'templates/views',
+	'view engine': 'jade',
+
+	'auto update': true,
+	'session': true,
+	'auth': true,
+	'user model': 'User',
+	'qiniu config': {
+		access_key: 'access_key',
+		secret_key: 'secret_key',
+		host: 'http://localhost',
+		secure_host: 'https://localhost'
+	}
+});
+
+...
+..
+.
+
+```
+* models
+```
+/**
+ * QiniuImages Model
+ * ==========
+ */
+
+var keystone = require('keystone');
+var Types = keystone.Field.Types;
+
+
+var QiniuImages = new keystone.List('QiniuImages');
+
+QiniuImages.add({
+	name: {type: String, required: true, index: true},
+	heroImage: {
+		type: Types.QiniuImage,
+		autoCleanup: true,
+		bucket: 'customer',
+		format: function (item, file) {
+			return '<img src="'+item.heroImage.secure_url+'" style="max-width: 300px"/>';
+		}
+	},
+	heroImages: {
+		type: Types.QiniuImages,
+		autoCleanup: true,
+		bucket: 'customer',
+		prefix: "test/prefix/",
+		format: function (item, file) {
+			var html = ""
+			for (var i = 0; i < item.length; i++) {
+				html = html + '<img src="'+item[i]+'" style="max-width: 80px"/>';
+			}
+			return html;
+		}
+	}
+});
+
+/**
+ * Registration
+ */
+QiniuImages.defaultColumns = 'name, heroImage';
+QiniuImages.register();
+
+```
+
+
+
+
 ![KeystoneJS](http://keystonejs.com/images/logo.svg)
 ===================================
 
