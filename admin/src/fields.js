@@ -13,7 +13,7 @@ module.exports = {
 	geopoint:         require('../../fields/types/geopoint/GeoPointField'),
 	html:             require('../../fields/types/html/HtmlField'),
 	key:              require('../../fields/types/key/KeyField'),
-	localfile:  	  require('../../fields/types/localfile/LocalFileField'),
+	localfile:  	  	require('../../fields/types/localfile/LocalFileField'),
 	localfiles:       require('../../fields/types/localfiles/LocalFilesField'),
 	location:         require('../../fields/types/location/LocationField'),
 	markdown:         require('../../fields/types/markdown/MarkdownField'),
@@ -28,5 +28,7 @@ module.exports = {
 	text:             require('../../fields/types/text/TextField'),
 	textarea:         require('../../fields/types/textarea/TextareaField'),
 	textarray:        require('../../fields/types/textarray/TextArrayField'),
-	url:              require('../../fields/types/url/UrlField')
+	url:              require('../../fields/types/url/UrlField'),
+	qiniuimage:  	  require('../../fields/types/qiniuimage/QiniuImageField'),
+	qiniuimages:  	  require('../../fields/types/qiniuimages/QiniuImagesField')
 };
