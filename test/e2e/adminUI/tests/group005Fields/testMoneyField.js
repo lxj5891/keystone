@@ -1,45 +1,46 @@
 var fieldTests = require('./commonFieldTestUtils.js');
+var MoneyModelTestConfig = require('../../../modelTestConfig/MoneyModelTestConfig');
 
 module.exports = {
 	before: fieldTests.before,
 	after: fieldTests.after,
 	'Money field should show correctly in the initial modal': function (browser) {
-		browser.app.openFieldList('Money');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('Money');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.assertUI({
-			listName: 'Money',
-			fields: ['name', 'fieldA']
+		browser.initialFormScreen.assertFieldUIVisible({
+			modelTestConfig: MoneyModelTestConfig,
+			fields: [{name: 'name'}, {name: 'fieldA'}]
 		});
 	},
 	'restoring test state': function(browser) {
-		browser.initialFormPage.cancel();
-		browser.app.waitForListScreen();
+		browser.initialFormScreen.cancel();
+		browser.adminUIApp.waitForListScreen();
 	},
 	'Money field can be filled via the initial modal': function(browser) {
-		browser.app.openFieldList('Money');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
-		browser.initialFormPage.fillInputs({
-			listName: 'Money',
+		browser.adminUIApp.openFieldList('Money');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: MoneyModelTestConfig,
 			fields: {
 				'name': {value: 'Money Field Test 1'},
 				'fieldA': {value: '1'},
 			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'Money',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: MoneyModelTestConfig,
 			fields: {
 				'name': {value: 'Money Field Test 1'},
 				'fieldA': {value: '1'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'Money',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: MoneyModelTestConfig,
 			fields: {
 				'name': {value: 'Money Field Test 1'},
 				'fieldA': {value: '1'},
@@ -47,23 +48,23 @@ module.exports = {
 		})
 	},
 	'Money field should show correctly in the edit form': function(browser) {
-		browser.itemPage.assertUI({
-			listName: 'Money',
-			fields: ['fieldA', 'fieldB']
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: MoneyModelTestConfig,
+			fields: [{name: 'fieldA'}, {name: 'fieldB'}]
 		});
 	},
 	'Money field can be filled via the edit form': function(browser) {
-		browser.itemPage.fillInputs({
-			listName: 'Money',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: MoneyModelTestConfig,
 			fields: {
 				'fieldB': {value: '2'}
 			}
 		});
-		browser.itemPage.save();
-		browser.app.waitForItemScreen();
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
-		browser.itemPage.assertInputs({
-			listName: 'Money',
+		browser.itemScreen.save();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: MoneyModelTestConfig,
 			fields: {
 				'name': {value: 'Money Field Test 1'},
 				'fieldA': {value: '1'},

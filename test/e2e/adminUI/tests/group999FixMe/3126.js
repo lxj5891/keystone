@@ -1,45 +1,45 @@
 module.exports = {
 	before: function (browser) {
-		browser.app = browser.page.app();
-		browser.signinPage = browser.page.signin();
-		browser.listPage = browser.page.list();
-		browser.itemPage = browser.page.item();
-		browser.initialFormPage = browser.page.initialForm();
-		browser.deleteConfirmation = browser.page.deleteConfirmation();
+		browser.adminUIApp = browser.page.adminUIApp();
+		browser.signinScreen = browser.page.signinScreen();
+		browser.listScreen = browser.page.listScreen();
+		browser.itemScreen = browser.page.itemScreen();
+		browser.initialFormScreen = browser.page.initialForm();
+		browser.deleteConfirmationScreen = browser.page.deleteConfirmation();
 
-		browser.app.navigate();
-		browser.app.waitForSigninScreen();
+		browser.adminUIApp.gotoHomeScreen();
+		browser.adminUIApp.waitForSigninScreen();
 
-		browser.signinPage.signin();
-		browser.app.waitForElementVisible('@homeScreen');
+		browser.signinScreen.signin();
+		browser.adminUIApp.waitForHomeScreen();
 	},
 	after: function (browser) {
-		browser.app.signout();
+		browser.adminUIApp.signout();
 		browser.end();
 	},
 	'Demonstrate issue 3126': function(browser) {
 
 		// Add new text item
 
-		browser.app.openMiscList('DateFieldMap');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openMiscList('DateFieldMap');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.fillInputs({
+		browser.initialFormScreen.fillFieldInputs({
 			listName: 'DateFieldMap',
 			fields: {
 				'datefield': {value: '2016-01-01'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.back();
+		browser.itemScreen.back();
 
 
 		// The following command fails, because there is no link to follow. This is a bug. 
 		// If you remove the map from test/e2e/models/misc/DateFieldMap.js then the command works.
-		browser.listPage.navigateToFirstItem();
+		browser.listScreen.navigateToFirstItem();
 
 	}
 };

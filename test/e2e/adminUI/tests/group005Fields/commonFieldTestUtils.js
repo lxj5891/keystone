@@ -1,19 +1,21 @@
 module.exports = {
 	before: function (browser) {
-		browser.app = browser.page.app();
-		browser.signinPage = browser.page.signin();
-		browser.listPage = browser.page.list();
-		browser.itemPage = browser.page.item();
-		browser.initialFormPage = browser.page.initialForm();
+		browser.adminUIApp = browser.page.adminUIApp();
+		browser.signinScreen = browser.page.signinScreen();
+		browser.listScreen = browser.page.listScreen();
+		browser.itemScreen = browser.page.itemScreen();
+		browser.initialFormScreen = browser.page.initialForm();
 
-		browser.app.navigate();
-		browser.app.waitForSigninScreen();
+		browser.adminUIApp
+			.gotoHomeScreen()
+			.waitForSigninScreen();
 
-		browser.signinPage.signin();
-		browser.app.waitForHomeScreen();
+		browser.signinScreen.signin();
+
+		browser.adminUIApp.waitForHomeScreen();
 	},
 	after: function (browser) {
-		browser.app.signout();
+		browser.adminUIApp.signout();
 		browser.end();
 	}
 };

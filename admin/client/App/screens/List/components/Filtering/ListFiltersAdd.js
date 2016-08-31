@@ -29,9 +29,6 @@ var ListFiltersAdd = React.createClass({
 			selectedField: false,
 		};
 	},
-	componentWillReceiveProps (nextProps) {
-		this.setState({ isOpen: nextProps.isOpen });
-	},
 	updateSearch (e) {
 		this.setState({ searchString: e.target.value });
 	},
@@ -145,8 +142,8 @@ var ListFiltersAdd = React.createClass({
 						component="div"
 						style={popoutBodyStyle}
 						transitionName={selectedField ? 'Popout__pane-next' : 'Popout__pane-prev'}
-						transitionEnterTimeout={360}
-						transitionLeaveTimeout={360}
+						transitionEnterTimeout={350}
+						transitionLeaveTimeout={350}
 						>
 						{selectedField ? this.renderForm() : this.renderList()}
 					</Transition>

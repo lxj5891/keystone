@@ -64,14 +64,18 @@ var Base = module.exports.Base = {
 		return <FormNote note={this.props.note} />;
 	},
 	renderField () {
-		var props = Object.assign(this.props.inputProps, {
-			autoComplete: 'off',
-			name: this.getInputName(this.props.path),
-			onChange: this.valueChanged,
-			ref: 'focusTarget',
-			value: this.props.value,
-		});
-		return <FormInput {...props} />;
+		const { autoFocus, value, inputProps } = this.props;
+		return (
+			<FormInput {...{
+				...inputProps,
+				autoFocus,
+				autoComplete: 'off',
+				name: this.getInputName(this.props.path),
+				onChange: this.valueChanged,
+				ref: 'focusTarget',
+				value,
+			}} />
+		);
 	},
 	renderValue () {
 		return <FormInput noedit>{this.props.value}</FormInput>;
@@ -129,6 +133,11 @@ module.exports.create = function (spec) {
 		spec: spec,
 		displayName: spec.displayName,
 		mixins: [Mixins.Collapse],
+		statics: {
+			getDefaultValue: function (field) {
+				return field.defaultValue || '';
+			},
+		},
 		render () {
 			if (!evalDependsOn(this.props.dependsOn, this.props.values)) {
 				return null;
@@ -139,6 +148,10 @@ module.exports.create = function (spec) {
 			return this.renderUI();
 		},
 	};
+
+	if (spec.statics) {
+		Object.assign(field.statics, spec.statics);
+	}
 
 	var excludeBaseMethods = {};
 	if (spec.mixins) {
@@ -152,7 +165,7 @@ module.exports.create = function (spec) {
 	}
 
 	Object.assign(field, blacklist(Base, excludeBaseMethods));
-	Object.assign(field, blacklist(spec, 'mixins'));
+	Object.assign(field, blacklist(spec, 'mixins', 'statics'));
 
 	if (Array.isArray(spec.mixins)) {
 		field.mixins = field.mixins.concat(spec.mixins);

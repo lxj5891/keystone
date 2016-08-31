@@ -1,45 +1,46 @@
 var fieldTests = require('./commonFieldTestUtils.js');
+var EmailModelTestConfig = require('../../../modelTestConfig/EmailModelTestConfig');
 
 module.exports = {
 	before: fieldTests.before,
 	after: fieldTests.after,
 	'Email field should show correctly in the initial modal': function (browser) {
-		browser.app.openFieldList('Email');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('Email');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.assertUI({
-			listName: 'Email',
-			fields: ['name', 'fieldA']
+		browser.initialFormScreen.assertFieldUIVisible({
+			modelTestConfig: EmailModelTestConfig,
+			fields: [{name: 'name'}, {name: 'fieldA'}]
 		});
 	},
 	'restoring test state': function(browser) {
-		browser.initialFormPage.cancel();
-		browser.app.waitForListScreen();
+		browser.initialFormScreen.cancel();
+		browser.adminUIApp.waitForListScreen();
 	},
 	'Email field can be filled via the initial modal': function(browser) {
-		browser.app.openFieldList('Email');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
-		browser.initialFormPage.fillInputs({
-			listName: 'Email',
+		browser.adminUIApp.openFieldList('Email');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: EmailModelTestConfig,
 			fields: {
 				'name': {value: 'Email Field Test 1'},
 				'fieldA': {value: 'user@example1.com'},
 			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'Email',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: EmailModelTestConfig,
 			fields: {
 				'name': {value: 'Email Field Test 1'},
 				'fieldA': {value: 'user@example1.com'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'Email',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: EmailModelTestConfig,
 			fields: {
 				'name': {value: 'Email Field Test 1'},
 				'fieldA': {value: 'user@example1.com'},
@@ -47,23 +48,23 @@ module.exports = {
 		})
 	},
 	'Email field should show correctly in the edit form': function(browser) {
-		browser.itemPage.assertUI({
-			listName: 'Email',
-			fields: ['fieldA', 'fieldB']
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: EmailModelTestConfig,
+			fields: [{name: 'fieldA'}, {name: 'fieldB'}]
 		});
 	},
 	'Email field can be filled via the edit form': function(browser) {
-		browser.itemPage.fillInputs({
-			listName: 'Email',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: EmailModelTestConfig,
 			fields: {
 				'fieldB': {value: 'user@example2.com'}
 			}
 		});
-		browser.itemPage.save();
-		browser.app.waitForItemScreen();
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
-		browser.itemPage.assertInputs({
-			listName: 'Email',
+		browser.itemScreen.save();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: EmailModelTestConfig,
 			fields: {
 				'name': {value: 'Email Field Test 1'},
 				'fieldA': {value: 'user@example1.com'},

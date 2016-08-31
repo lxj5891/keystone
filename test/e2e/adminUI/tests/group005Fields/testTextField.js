@@ -1,45 +1,46 @@
 var fieldTests = require('./commonFieldTestUtils.js');
+var TextModelTestConfig = require('../../../modelTestConfig/TextModelTestConfig');
 
 module.exports = {
 	before: fieldTests.before,
 	after: fieldTests.after,
 	'Text field should show correctly in the initial modal': function (browser) {
-		browser.app.openFieldList('Text');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('Text');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.assertUI({
-			listName: 'Text',
-			fields: ['name', 'fieldA']
+		browser.initialFormScreen.assertFieldUIVisible({
+			modelTestConfig: TextModelTestConfig,
+			fields: [{name: 'name'}, {name: 'fieldA'}]
 		});
 	},
 	'restoring test state': function(browser) {
-		browser.initialFormPage.cancel();
-		browser.app.waitForListScreen();
+		browser.initialFormScreen.cancel();
+		browser.adminUIApp.waitForListScreen();
 	},
 	'Text field can be filled via the initial modal': function(browser) {
-		browser.app.openFieldList('Text');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
-		browser.initialFormPage.fillInputs({
-			listName: 'Text',
+		browser.adminUIApp.openFieldList('Text');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: TextModelTestConfig,
 			fields: {
 				'name': {value: 'Text Field Test 1'},
 				'fieldA': {value: 'Some test text for field A'},
 			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'Text',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: TextModelTestConfig,
 			fields: {
 				'name': {value: 'Text Field Test 1'},
 				'fieldA': {value: 'Some test text for field A'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'Text',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: TextModelTestConfig,
 			fields: {
 				'name': {value: 'Text Field Test 1'},
 				'fieldA': {value: 'Some test text for field A'},
@@ -47,23 +48,23 @@ module.exports = {
 		})
 	},
 	'Text field should show correctly in the edit form': function(browser) {
-		browser.itemPage.assertUI({
-			listName: 'Text',
-			fields: ['fieldA', 'fieldB']
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: TextModelTestConfig,
+			fields: [{name: 'fieldA'}, {name: 'fieldB'}]
 		});
 	},
 	'Text field can be filled via the edit form': function(browser) {
-		browser.itemPage.fillInputs({
-			listName: 'Text',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: TextModelTestConfig,
 			fields: {
 				'fieldB': {value: 'Some test text for field B'}
 			}
 		});
-		browser.itemPage.save();
-		browser.app.waitForItemScreen();
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
-		browser.itemPage.assertInputs({
-			listName: 'Text',
+		browser.itemScreen.save();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: TextModelTestConfig,
 			fields: {
 				'name': {value: 'Text Field Test 1'},
 				'fieldA': {value: 'Some test text for field A'},

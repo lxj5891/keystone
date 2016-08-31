@@ -1,52 +1,53 @@
 var fieldTests = require('./commonFieldTestUtils.js');
+var FileModelTestConfig = require('../../../modelTestConfig/FileModelTestConfig');
 
 module.exports = {
 	before: fieldTests.before,
 	after: fieldTests.after,
 	'File field should show correctly in the initial modal': function (browser) {
-		browser.app.openFieldList('File');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('File');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.assertUI({
-			listName: 'File',
-			fields: ['name']
+		browser.initialFormScreen.assertFieldUIVisible({
+			modelTestConfig: FileModelTestConfig,
+			fields: [{name: 'name'}]
 		});
 	},
 	'restoring test state': function(browser) {
-		browser.initialFormPage.cancel();
-		browser.app.waitForListScreen();
+		browser.initialFormScreen.cancel();
+		browser.adminUIApp.waitForListScreen();
 	},
 	'File field can be filled via the initial modal': function(browser) {
-		browser.app.openFieldList('File');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
-		browser.initialFormPage.fillInputs({
-			listName: 'File',
+		browser.adminUIApp.openFieldList('File');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: FileModelTestConfig,
 			fields: {
 				'name': {value: 'File Field Test 1'},
 			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'File',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: FileModelTestConfig,
 			fields: {
 				'name': {value: 'File Field Test 1'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'File',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: FileModelTestConfig,
 			fields: {
 				'name': {value: 'File Field Test 1'},
 			}
 		})
 	},
 	'File field should show correctly in the edit form': function(browser) {
-		browser.itemPage.assertUI({
-			listName: 'File',
-			fields: ['fieldA', 'fieldB']
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: FileModelTestConfig,
+			fields: [{name: 'fieldA'}, {name: 'fieldB'}]
 		});
 	},
 };

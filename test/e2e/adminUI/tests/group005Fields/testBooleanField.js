@@ -1,46 +1,47 @@
 var fieldTests = require('./commonFieldTestUtils.js');
+var BooleanModelTestConfig = require('../../../modelTestConfig/BooleanModelTestConfig');
 
 module.exports = {
 	before: fieldTests.before,
 	after: fieldTests.after,
 	'Boolean field should show correctly in the initial modal': function (browser) {
-		browser.app.openFieldList('Boolean');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('Boolean');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.assertUIVisible({
-			listName: 'Boolean',
-			fields: ['name', 'fieldA']
+		browser.initialFormScreen.assertFieldUIVisible({
+			modelTestConfig: BooleanModelTestConfig,
+			fields: [{name: 'name'}, {name: 'fieldA'}]
 		});
 	},
 	'restoring test state': function(browser) {
-		browser.initialFormPage.cancel();
-		browser.app.waitForListScreen();
+		browser.initialFormScreen.cancel();
+		browser.adminUIApp.waitForListScreen();
 	},
 	'Boolean field can be filled via the initial modal': function(browser) {
-		browser.app.openFieldList('Boolean');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
-		browser.initialFormPage.fillInputs({
-			listName: 'Boolean',
+		browser.adminUIApp.openFieldList('Boolean');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: BooleanModelTestConfig,
 			fields: {
 				'name': {value: 'Boolean Field Test 1'},
 				'fieldA': {value: 'true'},
 				'fieldD': {value: 'Test'},
 			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'Boolean',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: BooleanModelTestConfig,
 			fields: {
 				'name': {value: 'Boolean Field Test 1'},
 				'fieldA': {value: 'true'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'Boolean',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: BooleanModelTestConfig,
 			fields: {
 				'name': {value: 'Boolean Field Test 1'},
 				'fieldA': {value: 'true'},
@@ -48,31 +49,29 @@ module.exports = {
 		})
 	},
 	'Boolean field should show correctly in the edit form': function(browser) {
-		browser.itemPage.assertUIVisible({
-			listName: 'Boolean',
-			fields: ['fieldA', 'fieldB']
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: BooleanModelTestConfig,
+			fields: [{name: 'fieldA'}, {name: 'fieldB'}]
 		});
 	},
 	'Boolean field should have its default value if hidden': function(browser) {
-		// The hidden boolean field fieldC should have its default value true, meaning that fieldD should be visible.
-		// This used not to be correct as per issue https://github.com/keystonejs/keystone/issues/3029
-		browser.itemPage.assertUIVisible({
-			listName: 'Boolean',
-			fields: ['fieldD'],
+		browser.itemScreen.assertFieldUIVisible({
+			modelTestConfig: BooleanModelTestConfig,
+			fields: [{name: 'fieldD'}],
 		});
 	},
 	'Boolean field can be filled via the edit form': function(browser) {
-		browser.itemPage.fillInputs({
-			listName: 'Boolean',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: BooleanModelTestConfig,
 			fields: {
 				'fieldB': {value: 'false'}
 			}
 		});
-		browser.itemPage.save();
-		browser.app.waitForItemScreen();
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
-		browser.itemPage.assertInputs({
-			listName: 'Boolean',
+		browser.itemScreen.save();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: BooleanModelTestConfig,
 			fields: {
 				'name': {value: 'Boolean Field Test 1'},
 				'fieldA': {value: 'true'},

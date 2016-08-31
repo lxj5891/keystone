@@ -1,107 +1,111 @@
 // TODO:  Currently the tests here only fill in the name field of the user list form.  That's because the other
 //		  fields in the user list do not have corresponding page object support, yet.  When they do revisit filling
 //		  all the fields.
+var UserModelTestConfig = require('../../../modelTestConfig/UserModelTestConfig');
+
 module.exports = {
 	before: function (browser) {
-		browser.app = browser.page.app();
-		browser.signinPage = browser.page.signin();
-		browser.listPage = browser.page.list();
-		browser.itemPage = browser.page.item();
-		browser.initialFormPage = browser.page.initialForm();
-		browser.deleteConfirmationPage = browser.page.deleteConfirmation();
-		browser.resetConfirmationPage = browser.page.resetConfirmation();
+		browser.adminUIApp = browser.page.adminUIApp();
+		browser.signinScreen = browser.page.signinScreen();
+		browser.listScreen = browser.page.listScreen();
+		browser.itemScreen = browser.page.itemScreen();
+		browser.initialFormScreen = browser.page.initialForm();
+		browser.deleteConfirmationScreen = browser.page.deleteConfirmation();
+		browser.resetConfirmationScreen = browser.page.resetConfirmation();
 
-		browser.app.navigate();
+		browser.adminUIApp
+			.gotoHomeScreen()
+			.waitForSigninScreen();
 
-		browser.app.waitForSigninScreen();
+		browser.signinScreen.signin();
 
-		browser.signinPage.signin();
+		browser.adminUIApp
+			.waitForHomeScreen()
+			.click('@accessMenu')
+			.waitForListScreen();
 
-		browser.app.waitForHomeScreen();
+		browser.listScreen.click('@secondItemLink');
 
-		browser.app.click('@accessMenu').waitForListScreen();
-
-		browser.listPage.click('@secondItemLink');
-
-		browser.app.waitForItemScreen();
+		browser.adminUIApp.waitForItemScreen();
 	},
 	after: function (browser) {
-		browser.app.signout();
+		browser.adminUIApp.signout();
 		browser.end();
 	},
 	'Item screen should allow creating an item of the same type': function (browser) {
-		browser.itemPage.new();
+		browser.itemScreen.new();
 
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.fillInputs({
-			listName: 'User',
+		browser.initialFormScreen.fillFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 1', lastName: 'Last 1'},
-			},
+			}
 		});
-		browser.initialFormPage.assertInputs({
-			listName: 'User',
+		browser.initialFormScreen.assertFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 1', lastName: 'Last 1'},
-			},
+			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
 	},
 	'Item screen should allow saving an item without changes': function (browser) {
-		browser.itemPage.save();
+		browser.itemScreen.save();
 
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
 	},
 	'Item screen should allow saving an item with changes': function (browser) {
-		browser.itemPage.fillInputs({
-			listName: 'User',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 2', lastName: 'Last 2'},
-			},
+			}
 		});
-		browser.itemPage.assertInputs({
-			listName: 'User',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 2', lastName: 'Last 2'},
-			},
+			}
 		});
-		browser.itemPage.save();
-		browser.app.waitForItemScreen();
-		browser.itemPage.assertFlashMessage('Your changes have been saved successfully');
+		browser.itemScreen.save();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.assertFlashMessage('Your changes have been saved successfully');
 	},
 	'Item screen should allow resetting an item with changes': function (browser) {
-		browser.itemPage.fillInputs({
-			listName: 'User',
+		browser.itemScreen.fillFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 3', lastName: 'Last 3'},
-			},
+			}
 		});
-		browser.itemPage.assertInputs({
-			listName: 'User',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 3', lastName: 'Last 3'},
-			},
+			}
 		});
 
-		browser.itemPage.reset();
-		browser.app.waitForResetConfirmationScreen();
-		browser.resetConfirmationPage.reset();
-		browser.app.waitForItemScreen();
+		browser.itemScreen.reset();
+		browser.adminUIApp.waitForResetConfirmationScreen();
+		browser.resetConfirmationScreen.reset();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.itemPage.assertInputs({
-			listName: 'User',
+		browser.itemScreen.assertFieldInputs({
+			modelTestConfig: UserModelTestConfig,
 			fields: {
 				'name': {firstName: 'First 2', lastName: 'Last 2'},
-			},
+			}
 		});
 	},
 	'Item screen should allow deleting an item': function (browser) {
-		browser.itemPage.delete();
-		browser.app.waitForDeleteConfirmationScreen();
-		browser.deleteConfirmationPage.delete();
-		browser.app.waitForListScreen();
+		browser.itemScreen.delete();
+		browser.adminUIApp.waitForDeleteConfirmationScreen();
+		browser.deleteConfirmationScreen.delete();
+		browser.adminUIApp.waitForListScreen();
 	},
 };

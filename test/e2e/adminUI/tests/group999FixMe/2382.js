@@ -1,82 +1,82 @@
 module.exports = {
 	before: function (browser) {
-		browser.app = browser.page.app();
-		browser.signinPage = browser.page.signin();
-		browser.listPage = browser.page.list();
-		browser.itemPage = browser.page.item();
-		browser.initialFormPage = browser.page.initialForm();
-		browser.deleteConfirmation = browser.page.deleteConfirmation();
+		browser.adminUIApp = browser.page.adminUIApp();
+		browser.signinScreen = browser.page.signinScreen();
+		browser.listScreen = browser.page.listScreen();
+		browser.itemScreen = browser.page.itemScreen();
+		browser.initialFormScreen = browser.page.initialForm();
+		browser.deleteConfirmationScreen = browser.page.deleteConfirmation();
 
-		browser.app.navigate();
-		browser.app.waitForSigninScreen();
+		browser.adminUIApp.gotoHomeScreen();
+		browser.adminUIApp.waitForSigninScreen();
 
-		browser.signinPage.signin();
-		browser.app.waitForElementVisible('@homeScreen');
+		browser.signinScreen.signin();
+		browser.adminUIApp.waitForHomeScreen();
 	},
 	after: function (browser) {
-		browser.app.signout();
+		browser.adminUIApp.signout();
 		browser.end();
 	},
 	'Demonstrate issue 2382': function(browser) {
 
 		// Add new text item
 
-		browser.app.openFieldList('Text');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openFieldList('Text');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.fillInputs({
+		browser.initialFormScreen.fillFieldInputs({
 			listName: 'Text',
 			fields: {
 				'name': {value: 'Test 1'},
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.app.click('@homeIconLink');
-		browser.app.waitForHomeScreen();
+		browser.adminUIApp.click('@homeIconLink');
+		browser.adminUIApp.waitForHomeScreen();
 
 		// Add new relationship with the above text item
 
-		browser.app.openMiscList('ManyRelationship');
-		browser.listPage.createFirstItem();
-		browser.app.waitForInitialFormScreen();
+		browser.adminUIApp.openMiscList('ManyRelationship');
+		browser.listScreen.createFirstItem();
+		browser.adminUIApp.waitForInitialFormScreen();
 
-		browser.initialFormPage.fillInputs({
+		browser.initialFormScreen.fillFieldInputs({
 			listName: 'ManyRelationship',
 			fields: {
 				'name': {value: 'Test 1'},
 				'fieldA': {value: 'Test 1'}
 			}
 		});
-		browser.initialFormPage.save();
-		browser.app.waitForItemScreen();
+		browser.initialFormScreen.save();
+		browser.adminUIApp.waitForItemScreen();
 
-		browser.app.click('@homeIconLink');
-		browser.app.waitForHomeScreen();
+		browser.adminUIApp.click('@homeIconLink');
+		browser.adminUIApp.waitForHomeScreen();
 
 		// Now delete the text item
 
-		browser.app.openFieldList('Text');
-		browser.app.waitForListScreen();
+		browser.adminUIApp.openFieldList('Text');
+		browser.adminUIApp.waitForListScreen();
 
 
-		browser.listPage.navigateToFirstItem();
-		browser.app.waitForItemScreen();
-		browser.itemPage.delete();
+		browser.listScreen.navigateToFirstItem();
+		browser.adminUIApp.waitForItemScreen();
+		browser.itemScreen.delete();
 
-		browser.deleteConfirmation
+		browser.deleteConfirmationScreen
 			.waitForElementVisible('@deleteButton');
 
-		browser.deleteConfirmation
+		browser.deleteConfirmationScreen
 			.click('@deleteButton');
 
-		browser.app.click('@homeIconLink');
-		browser.app.waitForHomeScreen();
+		browser.adminUIApp.click('@homeIconLink');
+		browser.adminUIApp.waitForHomeScreen();
 
-		browser.app.openMiscList('ManyRelationship');
-		browser.listPage.navigateToFirstItem();
+		browser.adminUIApp.openMiscList('ManyRelationship');
+		browser.listScreen.navigateToFirstItem();
 
 		// TODO since we've not established the intended behaviour yet, just pause.
 		// Currently, a blank box appears.
