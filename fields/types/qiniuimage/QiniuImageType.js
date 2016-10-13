@@ -48,7 +48,7 @@ function qiniuimage(list, path, options) {
   if (!keystone.get('qiniu config')) {
     throw new Error(
       'Invalid Configuration\n\n' +
-      'QiniuImage fields (' + list.key + '.' + this.path + ') require the "qiniu config" option to be set.\n\n' +
+      'QiniuImage fields (' + list.key + '.' + this.path + ') require the "qiniu config" option to be set.\n\n'
     );
   }
 }
