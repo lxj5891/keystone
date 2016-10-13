@@ -48,12 +48,12 @@ function qiniuimages(list, path, options) {
   qiniuimages.super_.call(this, list, path, options);
 
   // validate cloudinary config
-  if (!keystone.get('cloudinary config')) {
-    throw new Error('Invalid Configuration\n\n' +
-      'QiniuImages fields (' + list.key + '.' + this.path + ') require the "cloudinary config" option to be set.\n\n' +
-      'See http://keystonejs.com/docs/configuration/#services-cloudinary for more information.\n');
+  if (!keystone.get('qiniu config')) {
+    throw new Error(
+      'Invalid Configuration\n\n' +
+      'QiniuImage fields (' + list.key + '.' + this.path + ') require the "qiniu config" option to be set.\n\n' +
+    );
   }
-
 }
 
 /*!

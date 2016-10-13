@@ -52,7 +52,6 @@ function qiniuimage(list, path, options) {
       'See http://keystonejs.com/docs/configuration/#services-qiniu for more information.\n'
     );
   }
-
 }
 
 /*!
