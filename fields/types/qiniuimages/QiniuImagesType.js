@@ -49,10 +49,7 @@ function qiniuimages(list, path, options) {
 
   // validate cloudinary config
   if (!keystone.get('qiniu config')) {
-    throw new Error(
-      'Invalid Configuration\n\n' +
-      'QiniuImage fields (' + list.key + '.' + this.path + ') require the "qiniu config" option to be set.\n\n' +
-    );
+    throw new Error('Invalid Configuration  QiniuImage fields (' + list.key + '.' + this.path + ')');
   }
 }
 
