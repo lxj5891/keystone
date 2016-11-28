@@ -372,10 +372,6 @@ qiniuimage.prototype.getRequestHandler = function(item, req, paths, callback) {
 
   var field = this;
 
-  console.log("getRequestHandler");
-  console.log(req.body);
-  console.log("getRequestHandler");
-
   if (utils.isFunction(paths)) {
     callback = paths;
     paths = field.paths;
